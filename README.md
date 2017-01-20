@@ -4,20 +4,17 @@ This repository contains files for to the
 **Data Science - Getting and Cleaning Data - Week 4 peer-graded assessment**.  
 The purpose of this project is to demonstrate ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis. 
 
-The script included will produce two text files
+The script included will produce aonetext file: 
 
-1. **tidy_data.txt** with the tidy data  
-2. **means_by_groups.txt** with the average of each variable for each activity and each subject  
+**tidy_data_means_by_group.txt.txt** with the average of each variable for each activity and each subject  
 
-These files can then be read back into R using the **read.table** function  
+This file can then be read back into R using the **read.table** function  
 
 *Please note that functions such as **fread** may not work due to the length of the variable names*
 
 ## How to install and run
 
-1. Clone this repository to your local directory  
-2. Download the UCI data from https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip  
-3. Unzip the files into the same directory (this is important)  
+1. Clone this repository to your local directory (this will also download the raw data)
 5. Run the R script run_analysis.R with R or R Studio   
 (all required packages will install and load if not already installed/loaded)
 

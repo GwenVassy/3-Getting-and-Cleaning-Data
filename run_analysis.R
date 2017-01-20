@@ -1,6 +1,7 @@
 rm(list=ls())
 # Set working directory
-setwd("/Users/Gwen/Data-Science-Week-4-Assignment")
+this_dir <- dirname(parent.frame(2)$ofile)
+setwd(this_dir)
 
 # Load relevant packages
 if(!require(tidyr)) install.packages("tidyr")

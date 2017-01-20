@@ -100,6 +100,6 @@ library(dplyr)
         
         groups <- group_by(data_activity, SubjectNumber, Activity)
         groups <- summarise_each(groups, funs(mean(., na.rm = TRUE))) 
-        write.table(groups, file = "tidy_data_means_by_group.txt")
+        write.table(groups, file = "tidy_data_means_by_group.txt", row.name=FALSE)
 
         

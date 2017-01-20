@@ -36,11 +36,11 @@ These files can then be read back into R using the **read.table** function
 
 #####Section 4:  
 * Appropriately labels the data set with descriptive variable names using the names (from the features file)
-* Names the result and ouptuts it to the *tidy_data* file in the root folder
+* Names the result
 
-#####Section 4:  
+#####Section 5:  
 * Creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-* Outputs the table into the *means_by_groups* text file.
+* Outputs the table into the *tidy_data_means_by_group* text file in the root folder.
 
 ## Acknowledgements
 

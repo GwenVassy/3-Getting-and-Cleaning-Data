@@ -43,8 +43,10 @@ library(dplyr)
         subject_train <- fread("subject_train.txt") 
         names(Y_train) <- "activity_number"
         names(subject_train) <- "subject_number"
+        setwd("..")
+        setwd("..")
         
-        # 1.6Combine train files
+        # 1.6 Combine train files
         data_train <- cbind(subject_train, Y_train, X_train) 
         rm(X_train, Y_train, subject_train)
         
@@ -83,11 +85,12 @@ library(dplyr)
         names_activity <- c(names_activity, names_X) # Append names of relevant columns from features list
         names(data_activity) <- names_activity
         rm(features)
+        write.table(data_activity, file = "tidy_data.txt")
         
 # 5. From the data set in step 4, create a second, independent tidy data set 
 # with the average of each variable for each activity and each subject.
         
         groups <- group_by(data_activity, subject_number, activity_name)
         groups <- summarise_each(groups, funs(mean(., na.rm = TRUE))) 
-
+        write.table(groups, file = "means_by_groups.txt")
         

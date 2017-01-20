@@ -21,7 +21,7 @@ library(dplyr)
         setwd(UCI_dir)
         features <- read.table("features.txt")
         activity_labels <- read.table("activity_labels.txt")
-        names(activity_labels) <- c("activity_number", "activity_name")
+        names(activity_labels) <- c("activity_number", "Activity")
         
         # 1.3 Load files in test folder
         setwd(test_dir)
@@ -29,7 +29,7 @@ library(dplyr)
         Y_test <- fread("Y_test.txt")
         subject_test <- fread("subject_test.txt")
         names(Y_test) <- "activity_number"
-        names(subject_test) <- "subject_number" 
+        names(subject_test) <- "SubjectNumber" 
         
         # 1.4 Combine test files
         data_test <- cbind(subject_test, Y_test, X_test) 
@@ -42,7 +42,7 @@ library(dplyr)
         Y_train <- fread("Y_train.txt")
         subject_train <- fread("subject_train.txt") 
         names(Y_train) <- "activity_number"
-        names(subject_train) <- "subject_number"
+        names(subject_train) <- "SubjectNumber"
         setwd("..")
         setwd("..")
         
@@ -69,28 +69,37 @@ library(dplyr)
         
 # 3. Use descriptive activity names to name the activities in the data set        
         
+        activity_labels$Activity <- tolower(activity_labels$Activity) # Make all lower case
+        activity_labels$Activity <- sub("^(\\w?)", "\\U\\1", activity_labels$Activity, perl=T) # Capitalize first letter
+        activity_labels$Activity <- gsub("\\_(\\w?)", "\\U\\1", activity_labels$Activity, perl=T) # Remove _ and capitalize following letter
+        
         data_activity <- merge(data_relevant, activity_labels) %>% # Merge to add activity text
                          select(-activity_number) # Remove activity_number as no longer needed
-        # Bring activity name forward
-        data_activity <- select(data_activity, c(1, activity_name, 2:ncol(data_activity)-1))
+        data_activity <- select(data_activity, c(1, Activity, 2:ncol(data_activity)-1)) # Bring activity name forward
         rm(activity_labels, data_relevant)
+        
         
 # 4. Appropriately label the data set with descriptive variable names
         
         names_activity <- names(data_activity[,1:2]) # Keep names of first 2 columns
         names_X <- as.character(features[rel_cols-2, 2]) # Get activity names from features dataframe
         names_X <- gsub("*\\()*","",names_X) # Remove all brackets "()" within names
-        names_X <- gsub("*\\-","_",names_X) # Replace all hyphens with underscores within names
+        names_X <- gsub("*\\-m","M",names_X) # Replace all "-m" with "M" within names
+        names_X <- gsub("*\\-s","S",names_X) # Replace all "-s" with "S" within names
+        names_X <- gsub("*\\-","",names_X) # Replace all "-s" with "S" within names
+        names_X <- gsub("^t", "Time", names_X) # Replace all "t" at beginning with "Time" within names
+        names_X <- gsub("^f", "Freq", names_X) # Replace all "f" at beginning with "Freq" within names
         
         names_activity <- c(names_activity, names_X) # Append names of relevant columns from features list
         names(data_activity) <- names_activity
         rm(features)
-        write.table(data_activity, file = "tidy_data.txt")
+
         
 # 5. From the data set in step 4, create a second, independent tidy data set 
 # with the average of each variable for each activity and each subject.
         
-        groups <- group_by(data_activity, subject_number, activity_name)
+        groups <- group_by(data_activity, SubjectNumber, Activity)
         groups <- summarise_each(groups, funs(mean(., na.rm = TRUE))) 
-        write.table(groups, file = "means_by_groups.txt")
+        write.table(groups, file = "tidy_data_means_by_group.txt")
+
         
